@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TileBoard : MonoBehaviour
 {
@@ -182,6 +183,7 @@ public class TileBoard : MonoBehaviour
             gameManager.GameOver();
             Debug.Log("No moves available. Game over!");
             // Add your specific code here when there are no moves available
+            SceneManager.LoadScene("Gameover");
         }
     }
 
