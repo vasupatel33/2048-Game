@@ -71,7 +71,12 @@ public class GameManager : MonoBehaviour
 
         SaveHiscore();
     }
-
+    public void SaveScore()
+    {
+        PlayerPrefs.SetInt("LastSceneScore", score);
+        PlayerPrefs.Save(); 
+        // It's good practice to call Save() after setting PlayerPrefs values.
+    }
     private void SaveHiscore()
     {
         int hiscore = LoadHiscore();
