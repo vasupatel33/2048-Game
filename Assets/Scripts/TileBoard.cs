@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class TileBoard : MonoBehaviour
 {
+    [SerializeField] AudioSource audio;
+    [SerializeField] AudioClip clip;
+
     public GameManager gameManager;
     public Tile tilePrefab;
     public TileState[] tileStates;
@@ -13,6 +16,10 @@ public class TileBoard : MonoBehaviour
     private List<Tile> tiles;
     private bool waiting;
     private bool gameover = true;
+
+    private Vector2 touchStartPos;
+    private bool isSwiping;
+    private float minSwipeDistance = 50f;
 
     private void Awake()
     {
@@ -50,28 +57,80 @@ public class TileBoard : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Move(Vector2Int.up, 0, 1, 1, 1);
+                audio.PlayOneShot(clip);
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 Move(Vector2Int.left, 1, 1, 0, 1);
+                audio.PlayOneShot(clip);
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 Move(Vector2Int.down, 0, 1, grid.height - 2, -1);
+                audio.PlayOneShot(clip);
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 Move(Vector2Int.right, grid.width - 2, -1, 0, 1);
+                audio.PlayOneShot(clip);
             }
-            /*   else
-               {
-                   gameover = false;
-               }
-           }
-           else if (gameover == false)
-           {
-               Debug.Log("Game ended");
-           }*/
+            else if (Input.touchCount > 0)
+            {
+                HandleSwipeInput();
+            }
+        }
+    }
+
+    private void HandleSwipeInput()
+    {
+        Touch touch = Input.GetTouch(0);
+
+        switch (touch.phase)
+        {
+            case TouchPhase.Began:
+                touchStartPos = touch.position;
+                isSwiping = true;
+                break;
+
+            case TouchPhase.Ended:
+                if (isSwiping)
+                {
+                    Vector2 swipeDelta = touch.position - touchStartPos;
+
+                    if (swipeDelta.magnitude > minSwipeDistance)
+                    {
+                        swipeDelta.Normalize();
+
+                        if (Mathf.Abs(swipeDelta.x) > Mathf.Abs(swipeDelta.y))
+                        {
+                            if (swipeDelta.x > 0)
+                            {
+                                Move(Vector2Int.right, grid.width - 2, -1, 0, 1);
+                                audio.PlayOneShot(clip);
+                            }
+                            else
+                            {
+                                Move(Vector2Int.left, 1, 1, 0, 1);
+                                audio.PlayOneShot(clip);
+                            }
+                        }
+                        else
+                        {
+                            if (swipeDelta.y > 0)
+                            {
+                                Move(Vector2Int.up, 0, 1, 1, 1);
+                                audio.PlayOneShot(clip);
+                            }
+                            else
+                            {
+                                Move(Vector2Int.down, 0, 1, grid.height - 2, -1);
+                                audio.PlayOneShot(clip);
+                            }
+                        }
+                    }
+                }
+                isSwiping = false;
+                break;
         }
     }
 
@@ -180,9 +239,9 @@ public class TileBoard : MonoBehaviour
 
         if (CheckForGameOver())
         {
+            yield return new WaitForSeconds(5);
             gameManager.GameOver();
             Debug.Log("No moves available. Game over!");
-            // Add your specific code here when there are no moves available
             SceneManager.LoadScene("Gameover");
         }
     }
