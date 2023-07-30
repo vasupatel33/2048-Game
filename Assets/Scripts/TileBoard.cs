@@ -239,7 +239,7 @@ public class TileBoard : MonoBehaviour
 
         if (CheckForGameOver())
         {
-            yield return new WaitForSeconds(3);
+            //yield return new WaitForSeconds(3);
             gameManager.GameOver();
             Debug.Log("No moves available. Game over!");
             //SceneManager.LoadScene("Gameover");
