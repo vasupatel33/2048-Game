@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
+    path: Assets/_2048 Game/Scenes/MainMenu.unity
     guid: ab1e4b4bc1a246c46936cd5fa7bb59d9
   - enabled: 1
-    path: Assets/Scenes/2048.unity
+    path: Assets/_2048 Game/Scenes/2048.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Gameover.unity
+    path: Assets/_2048 Game/Scenes/Gameover.unity
     guid: 9b86ad013f9277a4cba890b7d6d5f7d0
   m_configObjects: {}
