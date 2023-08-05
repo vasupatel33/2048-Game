@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using UnityEngine.SceneManagement;
 
 namespace GoogleMobileAds.Sample
 {
@@ -8,14 +9,18 @@ namespace GoogleMobileAds.Sample
     /// Demonstrates how to use Google Mobile Ads interstitial ads.
     /// </summary>
     [AddComponentMenu("GoogleMobileAds/Samples/InterstitialAdController")]
+
     public class InterstitialAdController : MonoBehaviour
     {
         /// <summary>
         /// UI element activated when an ad is ready to show.
         /// </summary>
-        public GameObject AdLoadedStatus;
+        //public GameObject AdLoadedStatus;
 
         // These ad units are configured to always serve test ads.
+
+        public static Action OnUserClosed = delegate { };
+
 #if UNITY_ANDROID
         private const string _adUnitId = "ca-app-pub-3940256099942544/1033173712";
 #elif UNITY_IPHONE
@@ -67,7 +72,7 @@ namespace GoogleMobileAds.Sample
                 RegisterEventHandlers(ad);
 
                 // Inform the UI that the ad is ready.
-                AdLoadedStatus?.SetActive(true);
+                //AdLoadedStatus?.SetActive(true);
             });
         }
 
@@ -87,7 +92,6 @@ namespace GoogleMobileAds.Sample
             }
 
             // Inform the UI that the ad is not ready.
-            AdLoadedStatus?.SetActive(false);
         }
 
         /// <summary>
@@ -103,7 +107,7 @@ namespace GoogleMobileAds.Sample
             }
 
             // Inform the UI that the ad is not ready.
-            AdLoadedStatus?.SetActive(false);
+            //AdLoadedStatus?.SetActive(false);
         }
 
         /// <summary>
@@ -146,6 +150,7 @@ namespace GoogleMobileAds.Sample
             ad.OnAdFullScreenContentClosed += () =>
             {
                 Debug.Log("Interstitial ad full screen content closed.");
+                OnUserClosed?.Invoke();
             };
             // Raised when the ad failed to open full screen content.
             ad.OnAdFullScreenContentFailed += (AdError error) =>

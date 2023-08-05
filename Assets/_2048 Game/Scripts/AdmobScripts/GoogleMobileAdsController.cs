@@ -19,6 +19,8 @@ namespace GoogleMobileAds.Samples
         [SerializeField] private RewardedAdController rewardAdController;
 
         [SerializeField] private BannerViewController bannerViewController;
+
+        [SerializeField] private InterstitialAdController interstrialAdController;
          
         public override void Awake()
         {
@@ -95,6 +97,7 @@ namespace GoogleMobileAds.Samples
                 Debug.Log("Google Mobile Ads initialization complete.");
                 _isInitialized = true;
                 rewardAdController.LoadAd();
+                interstrialAdController.LoadAd();
             });
         }
         public void ShowRewardAd()
@@ -117,6 +120,18 @@ namespace GoogleMobileAds.Samples
         {
             yield return new WaitForSeconds(3f);
             bannerViewController.LoadAd();
+        }
+
+        public void ShowInterstitialAdd()
+        {
+            interstrialAdController.ShowAd();
+            StartCoroutine(LoadInterstitialAdd());
+        }
+        private IEnumerator LoadInterstitialAdd() 
+        {
+            yield return new WaitForSeconds(3f);
+            interstrialAdController.LoadAd();
+            
         }
 
 

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using GoogleMobileAds.Sample;
+using GoogleMobileAds.Samples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -240,10 +242,25 @@ public class TileBoard : MonoBehaviour
         if (CheckForGameOver())
         {
             //yield return new WaitForSeconds(3);
-            gameManager.GameOver();
-            Debug.Log("No moves available. Game over!");
             //SceneManager.LoadScene("Gameover");
-            LoadNewScene("Gameover");
+            
+            if (Application.internetReachability != NetworkReachability.NotReachable)
+            {
+                InterstitialAdController.OnUserClosed = null;
+                InterstitialAdController.OnUserClosed += () => 
+                {
+                    gameManager.GameOver();
+                    Debug.Log("No moves available. Game over!");
+                    LoadNewScene("Gameover");
+                };
+            GoogleMobileAdsController.Instance.ShowInterstitialAdd();
+            }
+            else
+            {
+                gameManager.GameOver();
+                Debug.Log("No moves available. Game over!");
+                LoadNewScene("Gameover");
+            }
         }
     }
     public void LoadNewScene(string sceneName)
