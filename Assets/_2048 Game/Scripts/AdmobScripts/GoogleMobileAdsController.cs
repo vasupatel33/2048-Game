@@ -131,7 +131,6 @@ namespace GoogleMobileAds.Samples
         {
             yield return new WaitForSeconds(3f);
             interstrialAdController.LoadAd();
-            
         }
 
 
