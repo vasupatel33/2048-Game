@@ -253,7 +253,7 @@ public class TileBoard : MonoBehaviour
                     Debug.Log("No moves available. Game over!");
                     LoadNewScene("Gameover");
                 };
-            GoogleMobileAdsController.Instance.ShowInterstitialAdd();
+                GoogleMobileAdsController.Instance.ShowInterstitialAdd();
             }
             else
             {
